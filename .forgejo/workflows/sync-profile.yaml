@@ -19,6 +19,9 @@ jobs:
           mkdir -p .github/profile
           sed 's|(\(img/\)|(../../\1|g' README.md > .github/profile/README.md
 
+          mkdir -p .github/public
+          sed 's|(\(img/\)|(../../\1|g' README.md > .github/public/README.md
+
       - name: Commit changes back to Codeberg
         run: |
           git config user.name "ProFed CI Bot"
