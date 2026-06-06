@@ -11,10 +11,8 @@ jobs:
   transform:
     runs-on: codeberg-small
     steps:
-      - name: Clone Repository
-        run: |
-          git clone --depth=1 https://codeberg.org{{ github.repository }}.git .
-          git checkout main
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Transform and Prepare Structure
         run: |
@@ -32,6 +30,6 @@ jobs:
             echo "Keine Änderungen am README festgestellt."
           else
             git commit -m "ci: update transformed README for GitHub mirror [skip ci]"
-            git push https://x-access-token:${{ secrets.CODEBERG_WRITE_TOKEN }}@codeberg.org/${{ github.repository }}.git main
+            git push https://x-access-token:${{ secrets.CODEBERG_WRITE_TOKEN }}@codeberg.org/${{ github.repository }}.git HEAD:main
           fi
 
