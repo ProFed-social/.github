@@ -28,6 +28,7 @@ jobs:
           git config user.email "bot@joinprofed.social"
           
           git add .github/profile/README.md
+          git add .github/public/README.md
           
           if git diff-index --quiet HEAD --; then
             echo "Keine Änderungen am README festgestellt."

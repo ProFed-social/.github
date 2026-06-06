@@ -5,4 +5,3 @@
 - [Issue Tracker](https://codeberg.org/ProFed/ProFed/issues)
 - Mirors: [GitLab](https://gitlab.com/profed/profed) [GitHub](https://github.com/ProFed-social/ProFed)
 
-
