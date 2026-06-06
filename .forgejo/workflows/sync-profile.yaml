@@ -1,0 +1,40 @@
+name: Prepare README for GitHub Mirror
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/profile/**' # Verhindert eine Endlosschleife, wenn die Action selbst pusht
+
+jobs:
+  transform:
+    runs-on: codeberg-small 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # Wir checken den Code mit einem Token aus, das Schreibrechte auf Codeberg hat
+          token: ${{ secrets.CODEBERG_WRITE_TOKEN }}
+
+      - name: Transform and Prepare Structure
+        run: |
+          # Zielverzeichnis für GitHub erstellen
+          mkdir -p .github/profile
+          
+          # Sucht nach relativen Bildpfaden mit (img/ und biegt sie für GitHub um
+          sed 's|(\(img/\)|(../../\1|g' README.md > .github/profile/README.md
+
+      - name: Commit changes back to Codeberg
+        run: |
+          git config --global user.name "ProFed CI Bot"
+          git config --global user.email "bot@joinprofed.social"
+          
+          git add .github/profile/README.md
+          if git diff-index --quiet HEAD --; then
+            echo "Keine Änderungen am README festgestellt."
+          else
+            git commit -m "ci: update transformed README for GitHub mirror [skip ci]"
+            git push origin main
+          fi
+
